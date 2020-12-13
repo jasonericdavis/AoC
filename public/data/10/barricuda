@@ -1,0 +1,23 @@
+barricuda
+3 points
+·
+12 hours ago
+Javascript/js/node.js
+I spent at least an hour with a coworker whiteboarding the possibility of finding some formula that that uses the significance of the factors of the example solutions to math out the solution of the others but couldn't find any relationship between the factors and ended up just doing some looping and counting the path branches. I probably could have made my iterate function a single function, but I'm pretty happy with how this turned out.
+Solution for day10 part2:
+let input = require("fs").readFileSync("../challenge-1/input.txt", { encoding: "utf-8", flag: 'r'}).trim();
+input = input.split(/[\n]/);
+
+function solve(input) {
+	input = input.sort( (a, b) => Number(a) - Number(b) );
+	input.unshift('0'); //add the starting value to the array
+	input.push(`${Number(input[input.length-1]) + 3}`); //add the ending value to the array
+	let countArr = [1];
+	let iterate = (index, joltDif) => (input[index - joltDif] >= (input[index] - 3) ) ? Number(countArr[index - joltDif]) : 0;
+	for(let i=1;i<input.length;i++){
+		let count = iterate(i, 1) + iterate(i, 2) + iterate(i, 3);
+		countArr.push(count);
+	}
+	return countArr[countArr.length-1];
+}
+console.log(solve(input));

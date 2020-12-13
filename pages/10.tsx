@@ -1,4 +1,3 @@
-
 import {useState, useEffect} from 'react'
 import Message from '../components/message'
 
@@ -76,6 +75,7 @@ const solvePuzzle2 = (plugs, console) => {
 }
 
 // https://www.reddit.com/r/adventofcode/comments/ka8z8x/2020_day_10_solutions/
+// Tribonacci
 const solve = (input, console) => {
 	//input.unshift('0'); //add the starting value to the array
 	input.push(`${Number(input[input.length-1]) + 3}`); //add the ending value to the array
