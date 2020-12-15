@@ -1,6 +1,6 @@
 import {puzzleAnswer} from './puzzleAnswer'
 
-export const solvePuzzle1 = (input) => {
+export const solvePuzzle1 = ({input}) => {
     const puzzle = puzzleAnswer()
     const mem = {}
     let mask = ''
@@ -37,9 +37,11 @@ export const solvePuzzle1 = (input) => {
     }, 0)
 
     puzzle.log(`Answer is ${answer}`)
-
+    return puzzle
 }
 
 export const solvePuzzle2 = (input) => {
-
+    const puzzle = puzzleAnswer()
+    puzzle.answer = "I wasnt smart enought to answer this puzzle"
+    return puzzle
 }

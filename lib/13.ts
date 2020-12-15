@@ -2,7 +2,7 @@ import {puzzleAnswer} from './puzzleAnswer'
 
 const outOfService = 'x'
 
-export const solvePuzzle1 = (input) => {
+export const solvePuzzle1 = ({input}) => {
     const puzzle = puzzleAnswer()
     const data = input.split('\n')
     const earliestTimeStamp = data[0]
@@ -24,7 +24,7 @@ export const solvePuzzle1 = (input) => {
     return puzzle
 }
 
-export const solvePuzzle2 = (input) => {
+export const solvePuzzle2 = ({input}) => {
     const puzzle = puzzleAnswer()
     const buses = input.split('\n')[1].split(',')
 
