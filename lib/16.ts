@@ -76,66 +76,63 @@ export const solvePuzzle2 = ({input}) => {
     const puzzle = puzzleAnswer()
     const{validFields, yourTicket, nearbyTickets} = createTicketParts(input, puzzle)
 
-    
+    // First remove the invalid tickets
+    const validTickets = []
     let validFieldsCombined = validFields.reduce((a, currentRange) => {
         a = a.concat(currentRange.fieldRange)
         return a
     }, [])
 
-    const fieldsByColumn = {}
-    const validTickets = nearbyTickets.filter(ticket => {
+    nearbyTickets.map(ticket => {
         // split the ticket into the individual fields
-        const fields = ticket.trim().split(',')
+        const individualFields = ticket.split(',')
 
-        for(var index=0; index<fields.length; index++){
-
-            const field = fields[index]
+        for(var index=0; index<individualFields.length; index++){
+            const field = individualFields[index]
             // the validFields are made up of an array of different ranges
-            if(!validFieldsCombined.includes(Number(field))) {
-                return false
-            }
+            if(!validFieldsCombined.includes(Number(field))) return
         }
-        return true
+
+        validTickets.push(ticket.trim().split(',').map(Number))
     })
 
-    
+    // Next combine each column of the remaining valid tickets
+    const combinedFields = {}
     validTickets.map(ticket => {
-        const fields = ticket.trim().split(',')
-        fields.map((field, index) => {
-            if(!fieldsByColumn[index]) fieldsByColumn[index] = [yourTicket[index]]
-            fieldsByColumn[index].push(Number(field))
+        ticket.map((field, index) => {
+            if(!combinedFields[index]) combinedFields[index] = [yourTicket[index]]
+            combinedFields[index].push(field)
         })
     })
 
-    validFields.map(fields => {
-        // for(var index=0; index<validFields.length;index++){       
-        //     const numberNotFound = fieldsByColumn[index].filter(current => {
-        //         return !fields.fieldRange.includes(current)
-        //     })
- 
-        //     if(numberNotFound.length === 0){
-        //         fields.index = index
-        //         return
-        //     }
-        // }
-        const temp = Object.keys(fieldsByColumn).map((key,index) => {
-            if (!(fieldsByColumn[key].filter(val => fields.fieldRange.includes(val)).length == 0)){
-                fields.index = index
-                return
+    // Next go thru each valid field and determine if all of the
+    // values in the combined fields exist in the valid field
+    // if one of the values does not exist then that valid field 
+    // doesnt map to the set of fields
+    Object.keys(combinedFields).map(key => {
+        const values = combinedFields[key]
+
+        for(var validFieldsIndex=0;validFieldsIndex<validFields.length;validFieldsIndex++){
+            //if(validFields[validFieldsIndex].index != null) continue
+
+            const currentFieldsToLookup = validFields[validFieldsIndex].fieldRange
+            const valueNotIncludedInValidFields = values.filter(val => {
+                const found = !currentFieldsToLookup.includes(val)
+                console.log(`Is ${val} Not in ${currentFieldsToLookup}: ${found}`)
+                return found
+            })
+
+            console.log(`Found ${valueNotIncludedInValidFields.length} that were not valid for ${key}`)
+            
+            if(valueNotIncludedInValidFields.length === 0){
+                console.log(`Setting Index to ${validFieldsIndex} for ${currentFieldsToLookup}`)
+                if(!validFields[validFieldsIndex].validIndexes) validFields[validFieldsIndex].validIndexes = []
+                validFields[validFieldsIndex].validIndexes.push(Number(key))
             }
-        } )
-        console.log(temp)
+        }
     })
 
-    // let multiplier = validFields.reduce((a, currentValue, index) => {
-    //     if(currentValue.name.startsWith('departure')) {
-    //         puzzle.log(`${currentValue.name}[${yourTicket[index]}]`)
-    //         a *= yourTicket[index]
-    //     }
-    //     return a
-    // },1)
-
-
-    // puzzle.answer = multiplier
+    
+    
     return puzzle
 }

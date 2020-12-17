@@ -30,7 +30,7 @@ const PuzzleInputSource = ({input, inputSource, inputSourceHandler}) => {
   )
 }
 
-const Puzzle = ({ name, day, puzzleHandler, ...rest }) => {
+const Puzzle = ({ children, name, day, puzzleHandler, ...rest }) => {
   const [puzzleAnswer, setPuzzleAnswer] = useState(null)
   const [input, setInput] = useState(null)
   const [inputSource, setInputSource] = useState('sample.txt')
@@ -64,6 +64,7 @@ const Puzzle = ({ name, day, puzzleHandler, ...rest }) => {
         <PuzzleInputSource input={input} inputSource={inputSource} inputSourceHandler={onChangeinputSource} />
         <textarea value={input} />
       </div>
+      {(children)? children : null}
     </div>
   );
 };
