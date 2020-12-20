@@ -1,5 +1,3 @@
-import next from 'next';
-import { isResSent } from 'next/dist/next-server/lib/utils';
 import {puzzleAnswer} from './puzzleAnswer'
 
 
